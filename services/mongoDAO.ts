@@ -1,6 +1,7 @@
 import mongoose,{ DocTypeFromGeneric, Model, Query, Schema } from 'mongoose'
 import String from "mongoose"
 import {IbasicSchema, IDAO} from '../types'
+import { DaoManager } from './DaoManager'
 export class MongoDAO implements IDAO {
     constructor(
         protected databaseObject: Schema<any>,

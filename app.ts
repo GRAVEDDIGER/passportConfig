@@ -8,7 +8,7 @@ const Schema=mongoose.Schema
 const GoogleStrategy=require( 'passport-google-oauth20').Strategy
 const {registerStrategy,loginStrategy} = require('./strategies/local')
 const oAuthModes=require('./strategies/oAuth2')
-import {MongoDAO} from './services/mongoDAO'
+import { DaoManager } from './services/DaoManager'
 
 ////////////////
 //SCHEMAS
@@ -44,11 +44,11 @@ function passportConfigBuilder (schemaObject:SchemaType<IlocalSchema>): Ipasspor
   let crypt = true
   let googleAuthModel:any
   schemaObject.add(basicSchema)
-  const mongoDAO=new MongoDAO(schemaObject)
+  const DAO=new DaoManager(schemaObject)
 
 /////////////////
 //MODELS
-  const users = mongoose.model('users', new Schema(schemaObject))
+  const users = DAO.MongoManager.table() //mongoose.model('users', new Schema(schemaObject))
   googleAuthModel = mongoose.model('usersGoogleAuthModel', googleAuthSchema)
 
   ///////////////
