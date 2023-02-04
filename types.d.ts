@@ -1,10 +1,10 @@
-import { Models } from "mongoose";
+import { DocTypeFromGeneric, Model, Models } from "mongoose";
 // type AuthObjectType ={
 //     clientID:string,
 //   clientSecret: string,
 //   callbackURL:string
 // }
-interface IpassportConfigBuilderReturn {
+export interface IpassportConfigBuilderReturn {
     buildLocalConfig:()=>IpassportConfigBuilderReturn, 
     setCrypt:(value:boolean)=>IpassportConfigBuilderReturn,
     GoogleoAuth: (authObject:AuthenticateOptionsGoogle,loginOnly:boolean)=>IpassportConfigBuilderReturn,
@@ -14,19 +14,35 @@ interface IpassportConfigBuilderReturn {
     users:Models,
     googleAuthModel:Models
 }
-interface googleUser {
+export interface googleUser {
     username:string,
     name?:string,
     lastName?:string,
     avatar?:string
 }
-interface IlocalSchema{
+export interface IlocalSchema{
     username:string,
     password:string,
     [key:string]:string|number|boolean
 
 }
-// trabajar luego con los callbacks 
-// interface IDone {
-//     done:(err?:Error,response?:any,flash:any)=>void
-// }
+export interface IbasicSchema{
+       username: {
+          type: String,
+          required: boolean,
+          unique: boolean
+        },
+        password: {
+          type: String,
+          required: boolean
+        }
+      }
+
+export interface IDAO {
+    table: ()=> Model<any>
+    extendTable:(schema:Schema<any>)=> Schema<any>
+    findById(id:string,dbModel:Model<any>,cb:any): Query<any,any,{},any>
+    async createUser(dbModel:Model<any>,userData:any): Promise<any>
+    loginObjectCreator(users:Model<any>,req:Request): ReadableStream<any>
+
+}

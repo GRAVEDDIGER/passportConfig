@@ -46,7 +46,7 @@ function loginStrategy(users:any,userNotFoundMessage:string,incorrectPasswordMes
     )
   
   }
-  function loginObjectCreator(users:any,req:Request){
+  function loginObjectCreator(users:Model<any>,req:Request){
   let objeto:any 
   Object.keys(users.schema.obj).forEach(keyValue=>{
   if (req.body !==null && req.body[keyValue as keyof ReadableStream<any>]!==undefined){ 

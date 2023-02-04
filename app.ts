@@ -1,4 +1,4 @@
-import { Models,Schema as SchemaType} from "mongoose"
+import { Model, Models,Schema as SchemaType} from "mongoose"
 import { AuthenticateOptionsGoogle } from "passport-google-oauth20"
 import { googleUser, IpassportConfigBuilderReturn, IlocalSchema } from "./types"
 const passport =require( 'passport')
@@ -8,6 +8,8 @@ const Schema=mongoose.Schema
 const GoogleStrategy=require( 'passport-google-oauth20').Strategy
 const {registerStrategy,loginStrategy} = require('./strategies/local')
 const oAuthModes=require('./strategies/oAuth2')
+import {MongoDAO} from './services/mongoDAO'
+
 ////////////////
 //SCHEMAS
 const googleAuthSchema = new SchemaType<googleUser>({
@@ -31,6 +33,7 @@ const basicSchema = {
     required: true
   }
 }
+
 function passportConfigBuilder (schemaObject:SchemaType<IlocalSchema>): IpassportConfigBuilderReturn {
 //////////////////
 //variables
@@ -40,8 +43,9 @@ function passportConfigBuilder (schemaObject:SchemaType<IlocalSchema>): Ipasspor
   let userAlrreadyExistsMessage:string
   let crypt = true
   let googleAuthModel:any
-
   schemaObject.add(basicSchema)
+  const mongoDAO=new MongoDAO(schemaObject)
+
 /////////////////
 //MODELS
   const users = mongoose.model('users', new Schema(schemaObject))
@@ -73,6 +77,7 @@ function passportConfigBuilder (schemaObject:SchemaType<IlocalSchema>): Ipasspor
     crypt = value
     return this 
   }
+ 
   /////////BUILDERS///////////////////
   function buildLocalConfig (this:IpassportConfigBuilderReturn):IpassportConfigBuilderReturn {
     registerStrategy(users,userAlrreadyExistsMessage,createHash,schemaObject,crypt)
