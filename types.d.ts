@@ -11,7 +11,7 @@ export interface IpassportConfigBuilderReturn {
     setUserNotFoundMessage:(userNotFoundMessageParam:string)=>IpassportConfigBuilderReturn,
     setIncorrectPassword:(incorrectPasswordParam:string)=>IpassportConfigBuilderReturn,
     setUserAlrreadyExistsMessage:(userExistsParam:string)=>IpassportConfigBuilderReturn,
-    users:Models,
+    users:Model<any>,
     googleAuthModel:Models
 }
 export interface googleUser {
